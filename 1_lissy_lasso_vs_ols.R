@@ -47,8 +47,7 @@ data <- data %>%
     dplyr::filter(age>=30 & age<=60 & pilabour > 0) %>%
     dplyr::mutate(pilabour = pilabour/0.799178,
                   age5 = cut(age, breaks = seq(min(age), max(age), 5), 
-                             right = FALSE, 
-                             ordered_result = TRUE),
+                             right = FALSE, ordered_result = TRUE),
                   age5num = as.numeric(age5)) 
   
 # Get missing information. Drop item non responses.
@@ -82,7 +81,6 @@ for(i in c("sex", "age5num", "marital", "disabled", "status1", "educlev", "ind1_
   coef_df <- summary(reg)$coefficients
   
   # Run Cross Validation (alpha 1, lambda 0, OLS). This way, we easily get a simple measure of OOS RMSE
-
   ols_tr <- caret::train(model,
                          data = data,
                          method = "glmnet",
@@ -109,7 +107,7 @@ for(i in c("sex", "age5num", "marital", "disabled", "status1", "educlev", "ind1_
   model <- pilabour ~ sex + factor(marital) + factor(educlev) + factor(age5num) +
                     factor(ind1_c) + factor(occ1_c) + disabled + factor(status1)
 
-  # Set el lambda a 225, as an example. Use "any" lambda you like, just to try. 
+  # Set lambda to 225, as an example. Use "any" lambda you like, just to try. 
   lambda_try <- 225       
   
   # Use caret package to check RMSE associated with your lambda_try
@@ -137,7 +135,7 @@ for(i in c("sex", "age5num", "marital", "disabled", "status1", "educlev", "ind1_
 
   # Define model and run tuning
   model <- pilabour ~ sex + factor(marital) + factor(educlev) + factor(age5num) + factor(status1) +
-                    factor(ind1_c) + factor(occ1_c) + disabled
+                      factor(ind1_c) + factor(occ1_c) + disabled
 
   lasso_tr <- caret::train(model,
                            data = data,
@@ -147,14 +145,14 @@ for(i in c("sex", "age5num", "marital", "disabled", "status1", "educlev", "ind1_
                            tuneGrid = expand.grid(alpha = 1,         
                                                   lambda = lambda_range))
   
+  # Plot tuning. Check that the minimum RMSE corresponds to the lambda value the algorithm has selected
   print(plot(y = lasso_tr$results$RMSE, x = lasso_tr$results$lambda,
              main = "RMSE by lambda value", xlab = "Lambda", ylab = "RMSE"))
   print(abline(v = lasso_tr[["bestTune"]][["lambda"]]))  
   lambda <- lasso_tr[["bestTune"]][["lambda"]]         
   rmse_lasso <- round(mean(lasso_tr[["resample"]][["RMSE"]]), 2) 
     
-  # Plot LASSO results
-  
+  # Plot LASSO results. 
   lasso_mod <- glmnet(vec, dep, alpha=1)
   plot(lasso_mod, xvar = "lambda")
   abline(v=log(lambda), lty="dashed", col="black")
@@ -165,6 +163,5 @@ for(i in c("sex", "age5num", "marital", "disabled", "status1", "educlev", "ind1_
   print(paste0("LASSO improves RMSE by ", round((rmse_ols - rmse_lasso)/rmse_ols*100, 2), "%"))
 
   # Get LASSO and get coefficients. You can use the lasso_mod object to predict and work as you need.
-  
   lasso_mod <- glmnet(vec, dep, alpha=1, lambda = lambda)
   coeff_lasso <- lasso_mod$beta 

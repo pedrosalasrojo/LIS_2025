@@ -36,28 +36,23 @@ results <- NA
   # Print name of dataset 
   print(ccyy) 
   
-  # Reset objects 
-  data1 <- NULL 
-  data2 <- NULL 
-  data  <- NULL 
-  dat_emp <- NULL 
-  tab <- NULL 
-  
   # Get data with functions previouisly defined 
   data1 <- seth(paste0(ccyy,'h'))  
-  
-  data1 <- data1 %>%
-    filter(inum == 1) 
-  
   data2 <- setp(paste0(ccyy,'p')) 
-  
+
+  # To simplify the analysis now, simply take respondents (relation == 1000) and first
+  # imputation (inum == 1). In "real-life" applications please use all imputations and a proper
+  # cleaning of the data.
+
+  data1 <- data1 %>%
+    filter(inum == 1)     
+ 
   data2 <- data2 %>%
     filter(age>=25 & age<=75) %>%
-    filter(relation == 1000) %>%
-    filter(inum == 1)
+    filter(relation == 1000) %>%  
+    filter(inum == 1)             
   
   # Merge by ID. Define age and select household heads
-  
   data <- merge(data1, data2, by=c("hid"), all = TRUE, sort=TRUE) 
 
   # Get na.omit information 
@@ -85,6 +80,9 @@ results <- NA
   model <- saves ~ age + sex + factor(marital) + factor(health_c) + 
     factor(educlev) + factor(status1) + factor(ind1_c) + factor(occ1_c) 
   
+  # This way you get the tree. Play with the parameters and get different trees. Try to understand
+  # why different parameters give different trees (and why sometimes give the same tree).
+
   tree <- partykit::ctree(model,
                           data = data, 
                           control = ctree_control(testtype = "Bonferroni", 
@@ -101,12 +99,12 @@ results <- NA
   
   #################################
   #
-  # Plot Tree ----
+  # Plot Tree ---- This codes is much nicer than the default. Modify at will!
   #
   #################################
   
   ct_node <- as.list(tree$node)
-  data$groups <- predict(tree, type = "node")
+  data$groups <- predict(tree, type = "node")           # This line predicts "nodes". Predict "anything" from the tree and the random forest
   
   pred <- data %>%
     group_by(groups) %>%
