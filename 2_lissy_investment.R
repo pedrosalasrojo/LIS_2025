@@ -90,7 +90,7 @@ results <- NA
                                                   alpha = 0.01,
                                                   minbucket = 100,
                                                   minsplit = 300,
-                                                  maxdepth = 6))
+                                                  maxdepth = 3))
   
   # Predict income and groups
   data$y_tilde <- predict(tree, type="response")
