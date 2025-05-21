@@ -12,6 +12,7 @@ This repository includes scripts designed for use with LISSY:
 
 ## Notes  
 This material is intended for instructional purposes and includes several simplifications. It is **not** suitable for direct research use. Always read carefully the package, data and software documentation.
+Machine Learning codes used in the [GEOM database](https://github.com/pedrosalasrojo/GEOM).
 
 ## Contact  
 Pedro Salas Rojo – [p.salas-rojo@lse.ac.uk](mailto:p.salas-rojo@lse.ac.uk)
