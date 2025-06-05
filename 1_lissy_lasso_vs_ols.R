@@ -97,7 +97,22 @@ for(i in c("sex", "age5num", "marital", "disabled", "status1", "educlev", "ind1_
 
   #################################
   #
-  # LASSO regularization ----
+  # LASSO output ----
+  #
+  #################################
+
+  lambda_try <- 225       
+  dep <- data$pilabour
+  vec <- model.matrix(~ sex + factor(marital) + factor(ind1_c) + factor(occ1_c) + disabled  + factor(status1) + 
+                      factor(educlev) + factor(age5num), data)
+
+  lasso_mod <- glmnet(vec, dep, alpha=1, lambda = lambda_try)
+  coeff <- lasso_mod$beta
+  print(coeff)
+
+  #################################
+  #
+  # LASSO regularization, example with lambda fix ----
   #
   #################################
 
@@ -121,8 +136,12 @@ for(i in c("sex", "age5num", "marital", "disabled", "status1", "educlev", "ind1_
   
   print(paste0("The RMSE of this model, with a lambda of ",lambda_try,", is: ", round(mean(lasso_tr[["resample"]][["RMSE"]]), 2)))
   
-  # Train LASSO to select opt* lambda (the one leading to the "best" OOS RMSE, the best prediction)
-  # Define LASSO setting 
+  #################################
+  #
+  # LASSO regularization, explore a range of lambda ----
+  #
+  #################################
+
   dep <- data$pilabour
   vec <- model.matrix(~ sex + factor(marital) + factor(ind1_c) + factor(occ1_c) + disabled  + factor(status1) + 
                       factor(educlev) + factor(age5num), data)
@@ -151,6 +170,12 @@ for(i in c("sex", "age5num", "marital", "disabled", "status1", "educlev", "ind1_
   print(abline(v = lasso_tr[["bestTune"]][["lambda"]]))  
   lambda <- lasso_tr[["bestTune"]][["lambda"]]         
   rmse_lasso <- round(mean(lasso_tr[["resample"]][["RMSE"]]), 2) 
+
+  #################################
+  #
+  # LASSO results ----
+  #
+  #################################
     
   # Plot LASSO results. 
   lasso_mod <- glmnet(vec, dep, alpha=1)
