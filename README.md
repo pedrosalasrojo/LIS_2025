@@ -16,5 +16,5 @@ This material is intended for instructional purposes and includes several simpli
 Machine Learning codes used in the [GEOM database](https://geom.ecineq.org/) can be found [here](https://github.com/pedrosalasrojo/GEOM).
 
 ## Contact  
-Pedro Salas Rojo – [p.salas-rojo@lse.ac.uk](mailto:p.salas-rojo@lse.ac.uk)
+[Pedro Salas Rojo](https://www.pedrosalasrojo.com/) – [p.salas-rojo@lse.ac.uk](mailto:p.salas-rojo@lse.ac.uk)
 
