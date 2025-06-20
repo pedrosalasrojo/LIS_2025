@@ -1,5 +1,6 @@
 # LIS/LWS 2025  
 Repository for the 2025 LIS Summer Introductory Workshop
+Introduction to Machine Learning with LISSY
 
 ## Contents  
 This repository includes scripts designed for use with LISSY:
