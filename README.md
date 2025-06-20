@@ -10,6 +10,8 @@ This repository includes scripts designed for use with LISSY:
 - **Decision Trees and Random Forests**  
   Application of tree-based methods to explore associations between socioeconomic covariates and investment behavior.  File 2_lissy_investment.R
 
+- **Slides**
+
 ## Notes  
 This material is intended for instructional purposes and includes several simplifications. It is **not** suitable for direct research use. Always read carefully the package, data and software documentation.
 
